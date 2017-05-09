@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PhotoEditor {
     public static class SimpleUtils {
@@ -14,6 +15,13 @@ namespace PhotoEditor {
                 char ch = str[(int)i];
                 result.AddRange(BitConverter.GetBytes(ch));
             }
+            return result;
+        }
+
+        public static List<byte> ToBytes(this Point point) {
+            List<byte> result = new List<byte>( );
+            result.AddRange(BitConverter.GetBytes(point.X));
+            result.AddRange(BitConverter.GetBytes(point.Y));
             return result;
         }
 
