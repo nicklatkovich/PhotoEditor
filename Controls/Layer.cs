@@ -110,6 +110,16 @@ namespace PhotoEditor.Controls
             List<byte> result = new List<byte>( );
             result.AddRange(this.LayerName.ToBytes( ));
             result.AddRange(this.LayerPosition.ToBytes( ));
+            if (this.layerBmpFrame == null) {
+                result.AddRange(BitConverter.GetBytes(0u));
+            } else {
+                result.AddRange(BitConverter.GetBytes(this.layerBmpFrame.PixelWidth));
+                result.AddRange(BitConverter.GetBytes(this.layerBmpFrame.PixelHeight));
+                int stride = this.layerBmpFrame.PixelWidth * (this.layerBmpFrame.Format.BitsPerPixel / 8);
+                byte[ ] pixels = new byte[layerBmpFrame.PixelWidth * layerBmpFrame.PixelHeight * this.layerBmpFrame.Format.BitsPerPixel / 8];
+                this.layerBmpFrame.CopyPixels(pixels, stride, 0);
+                result.AddRange(pixels);
+            }
             return result;
         }
     }
