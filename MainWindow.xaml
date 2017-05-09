@@ -10,7 +10,9 @@
         Width="1200" 
         WindowStartupLocation="CenterScreen"
         Loaded="MainWindow_Loaded"
-        Background="DarkGray">
+        Background="DarkGray"
+        KeyDown="OnKeyDownHandler"
+        KeyUp="OnKeyUpHandler">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="11*"/>

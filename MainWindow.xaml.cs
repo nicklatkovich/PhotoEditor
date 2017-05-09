@@ -23,6 +23,7 @@ namespace PhotoEditor
         [DllImport("Kernel32")]
         static extern IntPtr GetConsoleWindow();
 
+        private uint keyCtrlDown = 0;
 
         public MainWindow()
         {
@@ -704,5 +705,23 @@ namespace PhotoEditor
             VisualHost.BrushColor = Brushes.Transparent;
         }
 
+        // TODO: Write this!
+        private void Save( ) {
+            int i = 0;
+        }
+
+        private void OnKeyDownHandler(Object sender, KeyEventArgs e) {
+            if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl) {
+                keyCtrlDown++;
+            } else if (e.Key == Key.S && keyCtrlDown > 0) {
+                Save( );
+            }
+        }
+
+        private void OnKeyUpHandler(Object sender, KeyEventArgs e) {
+            if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl) {
+                keyCtrlDown--;
+            }
+        }
     }
 }
