@@ -105,5 +105,11 @@ namespace PhotoEditor.Controls
                 Console.WriteLine("layer " + LayerPosition.X + " " + LayerPosition.Y);
             }
         }
+
+        public List<byte> ToBytes( ) {
+            List<byte> result = new List<byte>( );
+            result.AddRange(this.LayerName.ToBytes( ));
+            return result;
+        }
     }
 }

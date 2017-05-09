@@ -11,6 +11,7 @@ using Microsoft.Win32;
 using System.Windows.Shapes;
 using PhotoEditor.Controls;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 namespace PhotoEditor
 {
@@ -707,7 +708,18 @@ namespace PhotoEditor
 
         // TODO: Write this!
         private void Save( ) {
-            int i = 0;
+            SaveFileDialog sfd = new SaveFileDialog( );
+            sfd.Filter = "BstuPhotoEditor|*.bpe";
+            if (sfd.ShowDialog( ) == true) {
+                List<byte> toWrite = new List<byte>( );
+                toWrite.AddRange(BitConverter.GetBytes(LayersWidgets.Count));
+                foreach (var layer in LayersWidgets) {
+                    toWrite.AddRange(layer.ThisLayer.ToBytes( ));
+                }
+                using (FileStream fstream = new FileStream(sfd.FileName, FileMode.OpenOrCreate)) {
+                    fstream.Write(toWrite.ToArray( ), 0, toWrite.Count);
+                }
+            }
         }
 
         private void OnKeyDownHandler(Object sender, KeyEventArgs e) {
