@@ -81,11 +81,12 @@ namespace PhotoEditor
 
                 if (x > 300 || y > 400) // если большое, уменьшается в 2 раза 
                 {
-                    BitmapFrame img = Effects.CreateResizedImage(bmpFrame, x/2, y/2, 20);
+                    BitmapFrame img = Effects.CreateResizedImage(bmpFrame, x / 2, y / 2, 20);
                     ind = 1;
-                } else
+                }
+                else
                 {
-                    BitmapFrame img = Effects.CreateResizedImage(bmpFrame, x , y , 20);
+                    BitmapFrame img = Effects.CreateResizedImage(bmpFrame, x, y, 20);
                 }
 
                 if (mainCanvas.Children.Count == 0)
@@ -129,11 +130,12 @@ namespace PhotoEditor
                 enc.Save(stm);
             }
         }
-       
+
         private void btnSave_Click(BitmapEncoder encoder, string format)
         {
             var saveDlg = new SaveFileDialog();
-            switch (format) {
+            switch (format)
+            {
                 case ".jpg":
                     saveDlg.Filter = "JPG|*.jpg";
                     break;
@@ -144,7 +146,7 @@ namespace PhotoEditor
                     saveDlg.Filter = "BMP|*.bmp";
                     break;
             }
-            
+
             if (saveDlg.ShowDialog() == true)
             {
                 SaveCanvas(mainCanvas, 96, saveDlg.FileName);
@@ -159,7 +161,7 @@ namespace PhotoEditor
         {
             if (mainCanvas.Children.Count > 0)
             {
-                for(int i = LayersWidgets.Count - 1; i >= 0; i--)
+                for (int i = LayersWidgets.Count - 1; i >= 0; i--)
                     Panel.SetZIndex(LayersWidgets[i].ThisLayer, LayersWidgets.Count - 1 - i);
             }
         }
@@ -179,7 +181,7 @@ namespace PhotoEditor
             for (int i = LayersWidgets.Count - 1; i > 0; i--)
             {
                 LayersWidgets[i] = LayersWidgets[i - 1];
-             
+
             }
             LayersWidgets[0] = last;
 
@@ -188,13 +190,13 @@ namespace PhotoEditor
 
             GlobalState.LayersCount = mainCanvas.Children.Count;
             GlobalState.currentLayerIndex = widgetsCanvas.SelectedIndex;
-            
-            text.Text = ""  + widgetsCanvas.Items.Count + LayersWidgets.IndexOf(layer.Widget) + GlobalState.currentLayerIndex;
+
+            text.Text = "" + widgetsCanvas.Items.Count + LayersWidgets.IndexOf(layer.Widget) + GlobalState.currentLayerIndex;
         }
 
         private void btnNewLayer_Click(object sender, RoutedEventArgs e)
         {
-            newLayer(1,350,350);
+            newLayer(1, 350, 350);
         }
 
         private void btnDeleteLayer_Click(object sender, RoutedEventArgs e)
@@ -246,9 +248,9 @@ namespace PhotoEditor
         private void MoveLayerDown(object sender, RoutedEventArgs e)
         {
             if (GlobalState.currentLayerIndex < widgetsCanvas.Items.Count - 1)
-               SwapLayers(GlobalState.currentLayerIndex, GlobalState.currentLayerIndex + 1);
+                SwapLayers(GlobalState.currentLayerIndex, GlobalState.currentLayerIndex + 1);
         }
-        
+
         private void sliderOpacity_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             int index = GlobalState.currentLayerIndex;
@@ -302,15 +304,15 @@ namespace PhotoEditor
 
         private void Rotate90(object sender, RoutedEventArgs e)
         {
-            
+
             Turn BoxWindow = new Turn();
             if (BoxWindow.ShowDialog() == true)
             {
-                
+
                 double x = double.Parse(BoxWindow.Turns);
                 Layer layer = (Layer)mainCanvas.Children[GlobalState.currentLayerIndex];
-                if (x==90 || x==180 || x == 360) { Effects.Rotate(layer, x); } else { Effects.RotateBilinear(layer, x); }
-                
+                if (x == 90 || x == 180 || x == 360) { Effects.Rotate(layer, x); } else { Effects.RotateBilinear(layer, x); }
+
                 layer.refreshBrush();
             }
         }
@@ -327,10 +329,10 @@ namespace PhotoEditor
                 double SizeW = double.Parse(Size.SizeWs);
                 double SizeH = double.Parse(Size.SizeHs);
                 Layer layer = (Layer)mainCanvas.Children[GlobalState.currentLayerIndex];
-               int  SizeHi = (int)SizeH;
+                int SizeHi = (int)SizeH;
                 int SizeWi = (int)SizeW;
-                BitmapFrame img = Effects.CreateResizedImage(layer.layerImageBrush.ImageSource, SizeWi, SizeHi, 20); 
-             
+                BitmapFrame img = Effects.CreateResizedImage(layer.layerImageBrush.ImageSource, SizeWi, SizeHi, 20);
+
                 layer.refreshBrush();
             }
         }
@@ -455,7 +457,7 @@ namespace PhotoEditor
         {
             int index = GlobalState.currentLayerIndex;
             var layer = LayersWidgets[index].ThisLayer;
-            
+
             // Erase
             if (GlobalState.CurrentTool == GlobalState.Instruments.Eraser)
             {
@@ -483,7 +485,7 @@ namespace PhotoEditor
                 GlobalState.MousePressed = true;
             }
         }
-        
+
         private void mainCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             int index = GlobalState.currentLayerIndex;
@@ -492,7 +494,7 @@ namespace PhotoEditor
             // Erase
             if (GlobalState.CurrentTool == GlobalState.Instruments.Eraser)
             {
-                
+
             }
 
             // Resize
@@ -539,7 +541,7 @@ namespace PhotoEditor
                     bool stretchHeight = (newPosition.Y >= 0 && newPosition.Y <= height) ? true : false;
                     bool stretchRight = (newPosition.X > width - 5 && newPosition.X < width && stretchHeight && stretchWidth) ? true : false;
                     bool stretchBottom = (newPosition.Y > height - 5 && newPosition.Y < height && stretchHeight && stretchWidth) ? true : false;
-                    
+
                     Console.WriteLine(e.GetPosition(mainCanvas) + " " + (xPos + width));
 
                     if (stretchRight && stretchBottom && !GlobalState.isResizing)
@@ -570,10 +572,10 @@ namespace PhotoEditor
 
                     double xDiff = mousePosX - clickPosition.X;
                     double yDiff = mousePosY - clickPosition.Y;
-                    
+
                     xDiff = (layer.Width + xDiff) > layer.MinWidth ? xDiff : layer.MinWidth;
                     yDiff = (layer.Height + yDiff) > layer.MinHeight ? yDiff : layer.MinHeight;
-                   
+
                     if (Cursor == Cursors.SizeNWSE)
                     {
                         layer.Width += xDiff;
@@ -583,7 +585,7 @@ namespace PhotoEditor
                         layer.Width += xDiff;
                     else if (Cursor == Cursors.SizeNS)
                         layer.Height += yDiff;
-                    
+
                     clickPosition.X = mousePosX;
                     clickPosition.Y = mousePosY;
                 }
@@ -706,32 +708,75 @@ namespace PhotoEditor
             VisualHost.BrushColor = Brushes.Transparent;
         }
 
-        // TODO: Write this!
-        private void Save( ) {
-            SaveFileDialog sfd = new SaveFileDialog( );
+        private void Save()
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "BstuPhotoEditor|*.bpe";
-            if (sfd.ShowDialog( ) == true) {
-                List<byte> toWrite = new List<byte>( );
+            if (sfd.ShowDialog() == true)
+            {
+                List<byte> toWrite = new List<byte>();
                 toWrite.AddRange(BitConverter.GetBytes(LayersWidgets.Count));
-                foreach (var layer in LayersWidgets) {
-                    toWrite.AddRange(layer.ThisLayer.ToBytes( ));
+                foreach (var layer in LayersWidgets)
+                {
+                    toWrite.AddRange(layer.ThisLayer.ToBytes());
                 }
-                using (FileStream fstream = new FileStream(sfd.FileName, FileMode.OpenOrCreate)) {
-                    fstream.Write(toWrite.ToArray( ), 0, toWrite.Count);
+                using (FileStream fstream = new FileStream(sfd.FileName, FileMode.OpenOrCreate))
+                {
+                    fstream.Write(toWrite.ToArray(), 0, toWrite.Count);
                 }
             }
         }
 
-        private void OnKeyDownHandler(Object sender, KeyEventArgs e) {
-            if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl) {
+        private void Load()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "BstuPhotoEditor|*.bpe";
+            if (ofd.ShowDialog() == true)
+            {
+                byte[] Read;
+                using (FileStream fstream = new FileStream(ofd.FileName, FileMode.OpenOrCreate))
+                {
+                    Read = new byte[fstream.Length];
+                    fstream.Read(Read, 0, (int)fstream.Length);
+                }
+                Queue<byte> q = new Queue<byte>(Read);
+                LayersWidgets.Clear();
+                mainCanvas.Children.Clear();
+                Int32 layersCount = Utils.FromBytesInt(q);
+                for (uint i = 0; i < layersCount; i++)
+                {
+                    Layer loadedLayer = Layer.FromBytes(q);
+                    LayersWidgets.Add(loadedLayer.Widget);
+                    mainCanvas.Children.Add(loadedLayer);
+                }
+                GlobalState.currentLayerIndex = 0;
+            }
+        }
+
+        private void OnKeyDownHandler(Object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
+            {
                 keyCtrlDown++;
-            } else if (e.Key == Key.S && keyCtrlDown > 0) {
-                Save( );
+            }
+            else if (keyCtrlDown > 0)
+            {
+                switch (e.Key)
+                {
+                    case Key.S:
+                        Save();
+                        break;
+                    case Key.O:
+                        Load();
+                        break;
+                }
             }
         }
 
-        private void OnKeyUpHandler(Object sender, KeyEventArgs e) {
-            if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl) {
+        private void OnKeyUpHandler(Object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl)
+            {
                 keyCtrlDown--;
             }
         }

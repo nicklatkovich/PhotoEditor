@@ -4,7 +4,7 @@ using System.Drawing;
 using System;
 using System.Windows;
 //using Accord.Imaging.Filters;
-using SimpleImageGallery; 
+using SimpleImageGallery;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -304,7 +304,7 @@ namespace PhotoEditor
 
         //------------- Конец: Фильтры обнаружения края --------------
         //-----Resize image----
-        
+
         //----end resize
 
 
@@ -385,7 +385,7 @@ namespace PhotoEditor
             return BitmapFrame.Create(resizedImage);
         }
         //--
-        
-        
+
+
     }
 }
